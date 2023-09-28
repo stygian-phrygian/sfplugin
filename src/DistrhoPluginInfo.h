@@ -4,7 +4,7 @@
 // required
 #define DISTRHO_PLUGIN_NAME                     "sfplugin"
 #define DISTRHO_PLUGIN_NUM_INPUTS               0
-#define DISTRHO_PLUGIN_NUM_OUTPUTS              2
+#define DISTRHO_PLUGIN_NUM_OUTPUTS              2 // stereo
 #define DISTRHO_PLUGIN_URI                      "https://github.com/stygian-phrygian/sfplugin"
 
 // realtime
@@ -29,6 +29,6 @@
 #define DISTRHO_PLUGIN_VST3_CATEGORIES          "Instrument|Sampler|Stereo"
 
 // TODO
-// enum of parameters goes here (to share between plugin and UI code)
+// parameters enum should be here (to share between plugin and UI code)
 
 #endif

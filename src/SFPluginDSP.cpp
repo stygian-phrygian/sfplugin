@@ -1,4 +1,5 @@
 #include "DistrhoPlugin.hpp"
+#include "DistrhoPluginUtils.hpp"
 // #include "fluidsynth.h"
 #include <cstdio>
 
@@ -64,7 +65,7 @@ protected:
       */
     float getParameterValue(uint32_t index) const override
     {
-        // same as before, ignore index check
+        printf("%s index=%d\n", __func__, index);
         return fGain;
     }
 
@@ -75,6 +76,7 @@ protected:
     {
         // same as before, ignore index check
 
+        printf("%s index=%d, value=%f\n", __func__, index, value);
         fGain = value;
     }
 
@@ -97,8 +99,35 @@ protected:
             const MidiEvent* midiEvents,
             uint32_t midiEventCount) override
     {
-        // do nothing
-        // print midi events?
+        for (AudioMidiSyncHelper amsh(outputs, frames, midiEvents, midiEventCount); amsh.nextEvent(); )
+        {
+            float* const outL = amsh.outputs[0];
+            float* const outR = amsh.outputs[1];
+
+            for (uint32_t i = 0; i < amsh.midiEventCount; ++i)
+            {
+
+                // ignore bigger midi events
+                if (amsh.midiEvents[i].size > MidiEvent::kDataSize)
+                {
+                    printf("%s ignoring midi\n", __func__);
+                    continue;
+                }
+
+                // TODO
+                // ... do something with the midi event
+                const MidiEvent& ev = amsh.midiEvents[i];
+                printf(
+                        "%s bytes=%x %x %x %x\n",
+                        __func__,
+                        ev.data[0],
+                        ev.data[1],
+                        ev.data[2],
+                        ev.data[3]);
+            }
+
+            // renderSynth(outL, outR, amsh.frames);
+        }
     }
 
 private:
